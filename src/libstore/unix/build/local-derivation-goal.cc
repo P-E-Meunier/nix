@@ -2151,7 +2151,7 @@ void LocalDerivationGoal::runChild()
             int initialLen = sandboxProfile.length();
             for (auto & i : pathsInChroot) {
 
-                if(sandboxProfile.length() - initialLen > (1 << 15)) {
+                if (sandboxProfile.length() - initialLen > (1 << 15)) {
                     sandboxProfile += ")\n(allow file-read* file-write* process-exec\n";
                     initialLen = sandboxProfile.length();
                 }
