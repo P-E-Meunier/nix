@@ -2172,7 +2172,6 @@ void LocalDerivationGoal::runChild()
                     sandboxProfile += fmt("\t(subpath \"%s\")\n", path);
                 else
                     sandboxProfile += fmt("\t(literal \"%s\")\n", path);
-
             }
             sandboxProfile += ")\n";
 
