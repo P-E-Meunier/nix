@@ -2144,6 +2144,7 @@ void LocalDerivationGoal::runChild()
                without file-write* allowed, access() incorrectly returns EPERM
              */
             sandboxProfile += "(allow file-read* file-write* process-exec\n";
+            int initialLen = sandboxProfile.length();
             for (auto & i : pathsInChroot) {
                 if (i.first != i.second.source)
                     throw Error(
@@ -2161,6 +2162,11 @@ void LocalDerivationGoal::runChild()
                     sandboxProfile += fmt("\t(subpath \"%s\")\n", path);
                 else
                     sandboxProfile += fmt("\t(literal \"%s\")\n", path);
+
+                if(sandboxProfile.length() - initialLen > (1 << 15)) {
+                    sandboxProfile += ")\n(allow file-read* file-write* process-exec\n";
+                    initialLen = sandboxProfile.length();
+                }
             }
             sandboxProfile += ")\n";
 
