@@ -2148,12 +2148,13 @@ void LocalDerivationGoal::runChild()
             // We create multiple allow lists, to avoid exceeding a limit in the darwin sandbox interpreter.
             // See https://github.com/NixOS/nix/issues/4119
             // We split our allow groups approximately at half the actual limit, 1 << 16
-            int initialLen = sandboxProfile.length();
+            int breakpoint = sandboxProfile.length() + (1 << 14);
             for (auto & i : pathsInChroot) {
 
-                if (sandboxProfile.length() - initialLen > (1 << 15)) {
+                if (sandboxProfile.length() >= breakpoint) {
+                    debug("Sandbox break: %d %d", sandboxProfile.length(), breakpoint);
                     sandboxProfile += ")\n(allow file-read* file-write* process-exec\n";
-                    initialLen = sandboxProfile.length();
+                    // breakpoint = sandboxProfile.length() + 1024;
                 }
 
                 if (i.first != i.second.source)
