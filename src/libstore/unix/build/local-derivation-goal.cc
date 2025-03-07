@@ -2154,7 +2154,6 @@ void LocalDerivationGoal::runChild()
                 if (sandboxProfile.length() >= breakpoint) {
                     debug("Sandbox break: %d %d", sandboxProfile.length(), breakpoint);
                     sandboxProfile += ")\n(allow file-read* file-write* process-exec\n";
-                    // breakpoint = sandboxProfile.length() + 1024;
                 }
 
                 if (i.first != i.second.source)
